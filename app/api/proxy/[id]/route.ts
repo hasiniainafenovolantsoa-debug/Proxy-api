@@ -1,23 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '../../../../lib/supabase';
-
 export async function GET(
   request: NextRequest, 
   { params }: { params: Promise<{ id: string }> }
 ) {
-  // Eto dia tsy maintsy miandry (await) ny params isika
   const { id } = await params;
+  console.log("ID voaray:", id); // Ity dia hiseho ao amin'ny Vercel Logs
 
-  // Izay vao mandeha ny lojika-nao amin'ny Supabase
   const { data, error } = await supabase
     .from('nanao_izay_anarany_ny_table')
     .select('*')
-    .eq('id', id)
+    .eq('id', id) // Raha UUID ny column, ity dia tokony ekena tsara
     .single();
 
   if (error) {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    // Mba hahafantarana ny tena olana, avereno ny error avy ao amin'ny Supabase
+    return NextResponse.json({ error: error.message, id_voaray: id }, { status: 404 });
   }
 
   return NextResponse.json(data);
-    }
+}
