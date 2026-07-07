@@ -8,7 +8,7 @@ export async function GET(
   const { id } = await params;
 
   const { data, error } = await supabase
-    .from('movies') // <--- SOLOY ETO indray ny anaran'ny table-nao
+    .from('movies') 
     .select('*')
     .eq('id', id)
     .single();
